@@ -18,39 +18,53 @@ const ItemsItem = styled.div`
   align-items: center;
 `;
 
+interface PriceProps {
+  coinId: string;
+}
 
 
-
-function Price({ tickersData }:any) {
+function Price({ coinId }:PriceProps) {
+  const { isLoading, data } = useQuery(
+    ["tickers", coinId],
+    () => fetchCoinTickers(coinId),
+  );
     return ( 
       <>
-       <Items>
-          <ItemsItem>All time High Price :  {tickersData?.ath_price} $ </ItemsItem>
+        { isLoading ? ("Loading Price...") : (
+        <>
+        <Items>
+          <ItemsItem>High Price :  {(data?.quotes.USD?.ath_price).toFixed(2)} $ </ItemsItem>
         </Items>
         <Items>
-          <ItemsItem>Price : $ {tickersData?.price}</ItemsItem>
+          <ItemsItem>Current Price : {(data?.quotes.USD?.price).toFixed(2)} $ </ItemsItem>
         </Items>
         <Items>
-          <ItemsItem>Max Change rate in last 24h:$ {tickersData?.market_cap_change_24h}</ItemsItem>
+          <ItemsItem>market_cap_change_24h: {data?.quotes.USD?.market_cap_change_24h} % </ItemsItem>
         </Items>
         <Items>
-            
-          <ItemsItem>Change rate (last 30 Minutes):$ {tickersData?.percent_change_30m}</ItemsItem>
+          <ItemsItem>percent_change_15m: {data?.quotes.USD?.percent_change_15m} % </ItemsItem>
         </Items>
         <Items>
-          
-          <ItemsItem>Change rate (last 1 hours):$ {tickersData?.percent_change_1h}</ItemsItem>
+          <ItemsItem>percent_change_30m: {data?.quotes.USD?.percent_change_30m} % </ItemsItem>
         </Items>
         <Items>
-          
-          <ItemsItem>Change rate (last 12 hours):$ {tickersData?.percent_change_12h}</ItemsItem>
+          <ItemsItem>percent_change_1h: {data?.quotes.USD?.percent_change_1h} % </ItemsItem>
         </Items>
         <Items>
-          <ItemsItem>Change rate (last 24 hours):$ {tickersData?.percent_change_24h}</ItemsItem>
+          <ItemsItem>percent_change_12h: {data?.quotes.USD?.percent_change_12h} % </ItemsItem>
+        </Items>
+        <Items>
+          <ItemsItem>percent_change_24h: {data?.quotes.USD?.percent_change_24h} % </ItemsItem>
         </Items>
         </>
-      )
-}
+        )
+        
+        }
+        </>
+        
+      
+      
+      )}
 
 
 export default Price
