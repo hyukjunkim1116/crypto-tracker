@@ -140,6 +140,18 @@ interface PriceData {
     };
   };
 }
+const Button = styled.button`
+  background-color: #9c88fe;
+  width: 60px;
+  height:40px;
+  border-radius:7px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:none;
+  color: ${props=> props.theme.textColor};
+  cursor: pointer;
+`;
 
 function Coin() {
   const { coinId } = useParams<RouteParams>();
@@ -170,6 +182,11 @@ function Coin() {
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
       </Header>
+      <Link to={"/"}>
+              <Button>
+                  <i className="fas fa-arrow-left"></i> 
+                </Button>
+      </Link>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
