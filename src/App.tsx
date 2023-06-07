@@ -1,6 +1,10 @@
-import { createGlobalStyle } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "./atoms";
+import styled from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -66,13 +70,44 @@ a {
   color:inherit;
 }
 `;
+const Button = styled.button`
+  background-color: #9c88fe;
+  width: 60px;
+  height:40px;
+  border-radius:7px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:none;
+  color: ${props=> props.theme.textColor};
+  cursor: pointer;
+`;
+const Title = styled.h1`
+  font-size: 48px;
+  color: ${(props) => props.theme.accentColor};
+`;
+const Header = styled.header`
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   return (
     <>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+    <Header>
+        <Title>코인</Title>
+        <Button onClick={toggleDarkAtom}>Toggle Mode</Button>
+      </Header>
       <GlobalStyle />
       <Router />
       <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   );
 }
