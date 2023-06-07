@@ -23,8 +23,7 @@ const ItemsItem = styled.div`
 
 function Price({ coinId }:any) {
   const { isLoading, data } = useQuery(["tickers", coinId], () =>
-    fetchCoinTickers(`${coinId}`)
-    
+    fetchCoinTickers(coinId)
   );
     return ( 
       <>
