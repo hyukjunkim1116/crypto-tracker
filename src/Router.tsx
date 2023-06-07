@@ -8,10 +8,11 @@ function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={Coins}/>
-        <Route path="/:coinId" component={Coin}>
-          <Route path="chart" component={Chart}/>
-          <Route path="price" component={Price}/>
+        <Route path="/:coinId">
+          <Coin />
+        </Route>
+        <Route path="/">
+          <Coins />
         </Route>
       </Switch>
     </BrowserRouter>
