@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { fetchCoinTickers } from "../api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 
 const Items = styled.div`
@@ -21,8 +21,7 @@ const ItemsItem = styled.div`
 
 
 
-function Price() {
-  const { state:coinId } = useLocation()
+function Price({ coinId }:any) {
   const { isLoading, data } = useQuery(["tickers", coinId], () =>
     fetchCoinTickers(`${coinId}`)
     
