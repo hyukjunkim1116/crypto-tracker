@@ -1,6 +1,8 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import { isDarkAtom } from "../atoms";
+import { useRecoilValue } from "recoil";
 
 interface IHistorical {
   time_open: string;
@@ -16,6 +18,7 @@ interface ChartProps {
   coinId: string;
 }
 function Chart({ coinId }: ChartProps) {
+  const isDark = useRecoilValue(isDarkAtom)
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -28,56 +31,65 @@ function Chart({ coinId }: ChartProps) {
       {isLoading ? (
         "Loading chart..."
       ) : (
-        <ApexChart
-          type="line"
-          series={[
+        <ApexChart 
+        type="candlestick"
+        series={[
             {
-              name: "Price",
-              data: data?.map((price) => price.close),
-            },
-          ]}
-          options={{
-            theme: {
-              mode: "dark",
-            },
-            chart: {
-              height: 300,
-              width: 500,
-              toolbar: {
-                show: false,
-              },
-              background: "transparent",
-            },
-            grid: { show: false },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
-            yaxis: {
-              show: false,
-            },
-            xaxis: {
-              axisBorder: { show: false },
-              axisTicks: { show: false },
-              labels: { show: false },
-              type: "datetime",
-              categories: data?.map((price) => price.time_close),
-            },
+                name: "price",
+                data: data?.map(price =>({
+                    x: price.time_close,
+                    y: [price.open, price.high, price.low, price.close]
+                }))
+            }
+        ]}
+        options={{
+          chart:
+          {
+            height: 400,
+            width: 400,
+            toolbar:{
+              show: false
+            }
+          },
+          theme:{
+              mode: isDark ? "dark" : "light" 
+          },
+                stroke: {
+                    width:1,
+                },
+                tooltip: {
+                    y: {
+                        formatter: (value) => `$ ${value.toFixed(1)}` 
+                    }
+                },
+                yaxis:{
+                    show:false,         
+                },
+                xaxis:{
+                    type:"datetime",
+                    labels:{
+                        style:{
+                            colors: isDark ? "#f5f6fa" : "#fbc531",
+                        }
+                    },
+                    axisTicks: { show: false },
+                    categories: data?.map(price => price.time_close),
+                },
+                colors: ["#9c88fe"],
             fill: {
               type: "gradient",
-              gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
-            },
-            colors: ["#0fbcf9"],
-            tooltip: {
-              y: {
-                formatter: (value) => `$${value.toFixed(2)}`,
+              gradient: {
+                type: "horizontal",
+                gradientToColors: ["#9c88fe"],
+                stops: [0, 100],
               },
             },
-          }}
-        />
-      )}
+
+            }}
+        /> 
+        )}
     </div>
-  );
-}
+)}
+
 
 export default Chart;

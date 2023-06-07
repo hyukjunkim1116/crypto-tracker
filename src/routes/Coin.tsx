@@ -119,7 +119,7 @@ interface PriceData {
   first_data_at: string;
   last_updated: string;
   quotes: {
-    USD: {
+    USD?: {
       ath_date: string;
       ath_price: number;
       market_cap: number;
@@ -151,6 +151,7 @@ const Button = styled.button`
   border:none;
   color: ${props=> props.theme.textColor};
   cursor: pointer;
+  margin-bottom: 20px;
 `;
 
 function Coin() {
@@ -184,7 +185,7 @@ function Coin() {
       </Header>
       <Link to={"/"}>
               <Button>
-                  <i className="fas fa-arrow-left"></i> 
+                 Home
                 </Button>
       </Link>
       {loading ? (

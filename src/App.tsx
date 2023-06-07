@@ -81,6 +81,7 @@ const Button = styled.button`
   border:none;
   color: ${props=> props.theme.textColor};
   cursor: pointer;
+  margin-left: 20px;
 `;
 const Title = styled.h1`
   font-size: 48px;
