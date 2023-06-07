@@ -21,47 +21,36 @@ const ItemsItem = styled.div`
 
 
 
-function Price({ coinId }:any) {
-  const { isLoading, data } = useQuery(["tickers", coinId], () =>
-    fetchCoinTickers(coinId)
-  );
+function Price({ tickersData }:any) {
     return ( 
       <>
-      {isLoading ? ( "Waiting...") : (
-      <>
-      console.log(data)
        <Items>
-          <ItemsItem>All time High Price :  {data.quotes?.USD?.ath_price} $ </ItemsItem>
+          <ItemsItem>All time High Price :  {tickersData?.ath_price} $ </ItemsItem>
         </Items>
         <Items>
-    
-          <ItemsItem>Price : $ {data?.quotes?.USD?.price}</ItemsItem>
+          <ItemsItem>Price : $ {tickersData?.price}</ItemsItem>
+        </Items>
+        <Items>
+          <ItemsItem>Max Change rate in last 24h:$ {tickersData?.market_cap_change_24h}</ItemsItem>
         </Items>
         <Items>
             
-          <ItemsItem>Max Change rate in last 24h:$ {data?.quotes?.USD?.market_cap_change_24h}</ItemsItem>
-        </Items>
-        <Items>
-            
-          <ItemsItem>Change rate (last 30 Minutes):$ {data?.quotes?.USD?.percent_change_30m}</ItemsItem>
+          <ItemsItem>Change rate (last 30 Minutes):$ {tickersData?.percent_change_30m}</ItemsItem>
         </Items>
         <Items>
           
-          <ItemsItem>Change rate (last 1 hours):$ {data?.quotes?.USD?.percent_change_1h}</ItemsItem>
+          <ItemsItem>Change rate (last 1 hours):$ {tickersData?.percent_change_1h}</ItemsItem>
         </Items>
         <Items>
           
-          <ItemsItem>Change rate (last 12 hours):$ {data?.quotes?.USD?.percent_change_12h}</ItemsItem>
+          <ItemsItem>Change rate (last 12 hours):$ {tickersData?.percent_change_12h}</ItemsItem>
         </Items>
         <Items>
-          
-          <ItemsItem>Change rate (last 24 hours):$ {data?.quotes?.USD?.percent_change_24h}</ItemsItem>
+          <ItemsItem>Change rate (last 24 hours):$ {tickersData?.percent_change_24h}</ItemsItem>
         </Items>
         </>
       )
 }
-      </>
-      )
-}
+
 
 export default Price
